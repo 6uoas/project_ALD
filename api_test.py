@@ -20,7 +20,7 @@ else:
 '''
 
 
-#key = ttbparktimothy260422001
+#key = 	ttbparktimothy260422001
 
 key = ['ttbparktimothy260422001']
 url = f"http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey={key}&QueryType=ItemNewAll&MaxResults=100" \
