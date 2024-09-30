@@ -138,8 +138,6 @@ def find_all_combinations(book_prices) -> list: #[0] : total_cost, [1:] : combo
 
   return result
 
-
-
 # 페이지의 배경 이미지 설정
 st.markdown(
     """
