@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 # 웹의 제목 설정
 st.set_page_config(page_title="알라딘 중고 최저가 탐색기")
 
-
 from urllib.error import HTTPError
 
 class MyCustomException(Exception): #예외 클래스
@@ -217,7 +216,7 @@ def isbn_to_title(isbn):
             return title
     
     except requests.RequestException as e:
-        return f"HTTP 요청 중 오류 발생: {e}"
+        return f":red[HTTP 요청 중 오류 발생:] {e}"
 
 
 # ISBN 입력
@@ -264,7 +263,7 @@ if st.button("최저가 탐색"):
                 st.divider()
             else:
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
-                st.write('재고 없음')
+                st.write('중고 재고 없음')
                 st.divider()
 
         st.subheader(f"{min_total_cost}원")
