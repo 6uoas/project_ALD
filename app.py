@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # 웹의 제목 설정
-st.set_page_config(page_title="알라딘 최저가 탐색기")
+st.set_page_config(page_title="알라딘 중고 최저가 탐색기")
 
 
 from urllib.error import HTTPError
@@ -63,10 +63,10 @@ def dict_maker(isbn) -> dict:
 
   for i in range(len(tmp_type)):
     if tmp_type[i]=='새책' or '알라딘' in tmp_type[i]:
-      try: #직배송 중고 있으면
-        store_price['직배송'] = min(tmp_price[i],store_price['직배송'])
-      except: #직배송 중고 없으면
-        store_price['직배송'] = tmp_price[i]
+      try: #알라딘 중고 있으면
+        store_price['알라딘'] = min(tmp_price[i],store_price['알라딘'])
+      except: #알라딘 중고 없으면
+        store_price['알라딘'] = tmp_price[i]
 
   #타입에 물건이 없으면 로 바뀜
   if used_store_html != []:
@@ -82,10 +82,10 @@ def dict_maker(isbn) -> dict:
           if seller[k].get_text()[4:] not in store_price: #같은 매장에서는 최저가만
             store_price[seller[k].get_text()[4:]] = int(''.join(price[k].get_text().split(",")))
 
-  #절판인데 알라딘 직배송 중고가 없다면
+  #절판인데 알라딘 알라딘 중고가 없다면
   try:
-    if store_price['직배송']==100000000:
-      del store_price['직배송']
+    if store_price['알라딘']==100000000:
+      del store_price['알라딘']
   except:
     pass
 
@@ -136,10 +136,7 @@ def find_all_combinations(book_prices) -> list: #[0] : total_cost, [1:] : combo
           best_combo = combo
 
   result = [min_total_cost, *best_combo]
-  '''
-  for final_combo in best_combo:
-    result.append(final_combo)
-  '''
+
   return result
 
 
@@ -159,7 +156,7 @@ st.markdown(
     }
     </style>
     <div class="title-container">
-        <h1>알라딘 최저가 탐색기</h1>
+        <h1>알라딘 중고 최저가 탐색기</h1>
     </div>
     """,
     unsafe_allow_html=True
