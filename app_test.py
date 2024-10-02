@@ -279,13 +279,13 @@ if search:
         for i in range(len(best_combo)):
             if best_combo[i] != '품절된 책':
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
-                st.write(f"{best_combo[i]}에서 {every[st.session_state.isbn_list[i]][best_combo[i]]}원에 구매")
+                st.write(f"{best_combo[i]}에서 {format(int(every[st.session_state.isbn_list[i]][best_combo[i]]),',d')}원에 구매")
                 st.divider()
             else:
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
                 st.write('중고 재고 없음')
                 st.divider()
 
-        st.subheader(f"{min_total_cost}원")
+        st.subheader(f"{format(int(min_total_cost),',d')}원")
     else:
         st.warning("ISBN 목록이 비어 있습니다. 먼저 ISBN을 추가해 주세요.")
