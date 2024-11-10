@@ -27,17 +27,17 @@ def dict_maker(isbn) -> dict:
   bs0bj = BeautifulSoup(html.read(),'html.parser') #html 전체 저장해놓고 있군..
 
 
-  # try:
-  #   result_count = bs0bj.find('span',{'class':'ss_f_g_l'})
-  #   if result_count == None:
-  #     raise MyCustomException("검색결과 없음 --> ISBN 다시 확인")
-  #   elif int(''.join(result_count.get_text().split(','))) >= 10:
-  #     raise MyCustomException("검색결과 많음 (동일 isbn이 10권 이상) --> ISBN 다시 확인")
-  # except AttributeError as e:
-  #   print(e)
+  try:
+    result_count = bs0bj.find('span',{'class':'ss_f_g_l'})
+    if result_count == None:
+      raise MyCustomException("검색결과 없음 --> ISBN 다시 확인")
+    elif int(''.join(result_count.get_text().split(','))) >= 10:
+      raise MyCustomException("검색결과 많음 (동일 isbn이 10권 이상) --> ISBN 다시 확인")
+  except AttributeError as e:
+    print(e)
 
   try:
-    bo_used = bs0bj.findAll("a",{"class":"bo_used"}) #eBook 같은 것 찾아줌
+    bo_used = bs0bj.findAll("a",{"class":"bo_used"}) #<a class="bo_used" href="~~">eBook</a> 같은 것 찾아줌
   except AttributeError as e:
     raise MyCustomException(e)
   tmp_type, tmp_price, store_price =[], [], {}
@@ -61,7 +61,7 @@ def dict_maker(isbn) -> dict:
       except: #직배송 중고 없으면
         store_price['직배송'] = tmp_price[i]
 
-  #타입에 물건이 없으면 로 바뀜
+  #타입에 물건이 없으면 <span class='bo_used'~~>로 바뀜
   if used_store_html != []:
     for i in used_store_html:
       html = urlopen(i)
@@ -135,3 +135,88 @@ def find_all_combinations(book_prices) -> list: #[0] : total_cost, [1:] : combo
   '''
   return result
 
+
+
+import time
+start_time = time.time()
+
+every = dict()
+isbns = []
+
+'''
+test_data
+for k in [9791191891287,9791192579504,9791156641131,9791162241639,9788968484698,9788996991342]:
+  pass
+'''
+
+while True:
+
+  try:
+    isbn = input('ISBN 하나씩 입력 (종료하려면 q를 입력) : ').strip()
+    if isbn in every:
+      raise MyCustomException('이미 입력한 ISBN') #중복입력 방지
+  except MyCustomException as e:
+    print(e) # "이미 입력한 ISBN"
+    print()
+    continue
+
+  i = time.time()
+
+  if isbn =='q' or isbn =='Q':
+    break
+  else:
+    print(f'searching for {isbn} in Aladin...')
+
+    try:
+      tmp = dict_maker(isbn)
+    except MyCustomException as e: #문제있는 isbn의 경우
+      print(e)
+      print()
+      continue
+    except: #url이나 http문제의 경우
+      print('url을 찾을 수 없음')
+      print()
+      continue
+
+    every[isbn] = tmp
+    isbns.append(isbn)
+
+  f = time.time()
+  print(f"{isbn} execution time : {f-i}s")
+  print()
+
+end_time = time.time()
+print(f"total execution time : {end_time - start_time}s")
+
+start_time = time.time()
+
+best_combo = find_all_combinations(every)[1:]
+min_total_cost = find_all_combinations(every)[0]
+
+end_time = time.time()
+
+# 최소 비용과 선택한 조합 출력
+print('**가장 저렴한 조합**')
+
+for i in range(len(best_combo)):
+  if best_combo[i] != '품절된 책':
+    print(f'ISBN : {isbns[i]} --> {best_combo[i]}에서 {every[isbns[i]][best_combo[i]]}원에 구매')
+  else:
+    print(f'ISBN : {isbns[i]} --> 재고 없음')
+
+print(f'최종 최소 비용: {min_total_cost} 원')
+print()
+print(f'execution time : {end_time - start_time}s')
+
+
+'''
+data
+voca = 9788965422785
+vol4 rc = 9788917239508
+vol4 lc = 9788917239492
+vol3 rc = 9788917238549
+vol3 lc = 9788917238532
+vol2 rc = 9788917232196
+vol2 lc = 9788917232189
+
+'''

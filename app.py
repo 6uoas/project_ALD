@@ -203,7 +203,7 @@ def isbn_to_title(isbn):
         # 책 제목 추출
         title_element = soup.find('a', class_='bo3')
         if title_element:
-            title = title_element.find('b').text.strip()
+            title = title_element.text.strip()
             if title == '목차에서 검색':
                 title = ':red[검색 결과가 없습니다. 삭제하고 다시 입력하세요]'
                 st.session_state.isbn_title[isbn] = title

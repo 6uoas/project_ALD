@@ -1,46 +1,59 @@
-from bs4 import BeautifulSoup
-import requests
-import streamlit as st
-import pandas as pd
-import json
-
-from urllib.request import urlopen
-from urllib.error import HTTPError
-from urllib.error import URLError
-
-'''
-try:
-    html = urlopen("https://www.aladin.co.kr/home/welcome.aspx")
-except HTTPError as e:
-    print(e)
-except URLError as e:
-    print("알라딘 서버가 다운되었습니다.")
-else:
-    print("정상적으로 html을 가져왔습니다.")
-'''
+import time
+length = 1000000
+a = range(length, step=2)
+b = range(1, length, step=2)
+# print(a[0], a[1])
+# print(b[0], b[1])
 
 
-#key = 	ttbparktimothy260422001
+def time_check(func):
+    def print_time():
+        aa = time.time()
+        func()
+        nb = time.time()
+        print("time : ", nb-aa)
+    return print_time
 
-key = ['ttbparktimothy260422001']
-url = f"http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey={key}&QueryType=ItemNewAll&MaxResults=100" \
-      "&start=1&SearchTarget=Book&output=js&Version=20131101&CategoryId=50993"
 
-#request 보내기
-response = requests.get(url)
+@time_check
+def test():
+    for_big_calc_sum = 0
+    for ii in range(len(a)):
+        for j in range(len(b)):
+            for_big_calc_sum += a[ii]*b[j]
+    print(for_big_calc_sum)
 
-#받은 response를 json 타입으로 바뀌주기
-response_json = json.loads(response.text)
-#확인
-print(response_json)
 
-'''
-print(bs.h1)
+if __name__ == "__main__":
 
-<h1><a href="https://www.aladin.co.kr/home/start.aspx"
-id="logoBtn" title="알라딘 첫화면으로 가기">
-<img alt="알라딘" src="//image.aladin.co.kr/img/header/2023/aladin_logo.jpg"/
-</a>
-</h1>
-처음 확인되는 h1 태그 모두 반환
-'''
+    test_dict = dict()
+    for i in range(int(length/2)):
+        test_dict[a[i]] = b[i]
+    # print(test_dict)
+    # {0: 1, 2: 3, 4: 5, 6: 7, ..... 인 큰 딕셔너리 생성
+
+    test_list = list()
+    for i in range(int(length/2)):
+        test_list.append(a[i])
+
+        
+    print("Dict")
+    dict_start_time = time.time()
+    counter = 0
+    for i in range(int(length/2)):
+        if i in test_dict:
+            counter += 1
+
+    dict_end_time = time.time()
+    print("hit counter : ", counter, " time = ", dict_end_time - dict_start_time)
+
+    print("List")
+    list_start_time = time.time()
+    counter = 0
+    for i in range(int(length / 2)):
+        if i in test_list:
+            counter += 1
+
+    list_end_time = time.time()
+    print("hit counter : ", counter, " time = ", list_end_time - list_start_time)
+
