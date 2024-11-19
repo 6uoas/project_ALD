@@ -215,13 +215,13 @@ def isbn_to_title(isbn):
     except requests.RequestException as e:
         return f":red[HTTP 요청 중 오류 발생:] {e}"
 
-st.write("")
-st.write("")
+# st.write("")
+# st.write("")
 
 # ISBN 입력
 
 # st.subheader("ISBN 입력", divider=True)
-st.subheader("ISBN 입력")
+# st.subheader("ISBN 입력")
 
 isbn_input = st.text_input("", placeholder="ISBN을 입력하고 엔터를 누르세요",
                             key="isbn_input", on_change=add_isbn)
@@ -234,7 +234,7 @@ st.write('')
 st.write('')
 
 # st.subheader("추가된 책 목록",divider=True)
-st.subheader("추가된 책 목록")
+st.subheader("목록")
 # ISBN 목록 표시
 if st.session_state.isbn_list:
     for index, isbn in enumerate(st.session_state.isbn_list, start=1):
@@ -262,10 +262,10 @@ if st.session_state.isbn_list:
 every = dict()
 isbns = []
 
-st.divider()
-search = st.button("최저가 탐색")
-st.write("")
-st.write("")
+#st.divider()
+search = st.button("탐색")
+#st.write("")
+#st.write("")
 
 # 최저가 탐색 버튼
 if search:
