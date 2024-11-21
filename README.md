@@ -39,9 +39,11 @@ Ta-Da
 [CHECK](https://www.aladin.co/robots.txt) Aladin's robots.txt
 
 ### User-agent: *
-* Disallow: /contetns/
+* Disallow: /content/*
 
 updated at 241121
+계속 확인 예정..
+https://www.aladin.co.kr/robots.txt ??
 
 ---
 
