@@ -286,9 +286,9 @@ if search:
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
                 st.write(f"{best_combo[i]}에서 {format(int(every[st.session_state.isbn_list[i]][best_combo[i]]),',d')}원에 구매")
                 # st.divider()
-            else:
-                st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
-                st.write('중고 재고 없음')
+            # else:
+                # st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
+                # st.write('중고 재고 없음')
                 # st.divider()
 
         st.subheader(f"{format(int(min_total_cost),',d')}원")
