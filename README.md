@@ -36,61 +36,12 @@ Ta-Da
 
 ## robots.txt
 
-[CHECK](https://www.aladin.co.kr/robots.txt) Aladin's robots.txt
+[CHECK](https://www.aladin.co/robots.txt) Aladin's robots.txt
 
 ### User-agent: *
-* Disallow: /mobile/
-* Disallow: /js/
-* Disallow: /aaintraweb/
-* Disallow: /account/
-* Disallow: /api/
-* Disallow: /errormng/
-* Disallow: /intranet/
-* Disallow: /jiny/
-* Disallow: /login/
-* Disallow: /mail/
-* Disallow: /mng/
-* Disallow: /order/
-* Disallow: /scm/
-* Disallow: /search/
-* Disallow: /ttb/
-* Disallow: /webservice/
-* Disallow: /wservice/
-* Disallow: /*?EventId=201357
-* Disallow: /*?EventId=199338
-* Disallow: /*?EventId=198631
-* Disallow: /shop/book/wletslookViewerNew.aspx
-* Disallow: /*.swf$
-* Allow: /
-  
-### User-Agent: QuerySeekerSpider ( http://queryseeker.com/bot.html )
-* Disallow: /
+* Disallow: /contetns/
 
-### User-agent: AhrefsBot
-* Disallow: /
-  
-### User-agent: MJ12bot
-* Disallow: /
-  
-### User-agent: SemrushBot
-* Disallow: /
-
-### User-agent: Baiduspider
-* Disallow: /
-  
-### User-agent: Ezooms
-* Disallow: /
-  
-### User-agent: YandexBot
-* Disallow: /
-  
-### User-agent: ltx71
-* Disallow: /
-  
-### User-agent: zgrab/0.x
-* Disallow: /
-
-Sitemap: https://www.aladin.co.kr/ucl_editor/util/sitemap/sitemap.xml
+updated at 241121
 
 ---
 
