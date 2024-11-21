@@ -169,15 +169,17 @@ def add_isbn():
     if isbn_input.replace(" ", "").isdigit():  # ISBN이 숫자만 이루어져 있는지 확인 (사이 공백 무시)
         isbn_input = isbn_input.replace(" ", "")  # ISBN에서 모든 공백 제거
 
-        if len(isbn_input) != 13:
-            st.warning("ISBN은 13자리 수로 이루어져 있습니다.")
+        # if len(isbn_input) != 13 or len(isbn_input) != 10:
+            # st.warning("ISBN은 13자리 또는 10자리 숫자로 이루어져 있습니다.")
         #elif isbn_input and isbn_input not in st.session_state.isbn_list:
-        elif len(isbn_input) == 13 and isbn_input not in st.session_state.isbn_list:
+        if (len(isbn_input) == 13 or len(isbn_input) == 10) and isbn_input not in st.session_state.isbn_list:
             st.session_state.isbn_list.append(isbn_input)
             st.success(f"ISBN '{isbn_input}'가 추가되었습니다.")
             st.session_state.isbn_input = ""  # 입력란 초기화
         elif isbn_input in st.session_state.isbn_list:
             st.warning("이미 추가된 ISBN입니다.")
+        else:
+            st.warning("ISBN은 13자리 또는 10자리 숫자로 이루어져 있습니다.")
     else:
         st.warning("숫자만 입력해 주세요.")
 
