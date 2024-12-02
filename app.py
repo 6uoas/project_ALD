@@ -94,7 +94,6 @@ def dict_maker(isbn) -> dict:
   else:
     return store_price
 
-
 #dict_maker에서 반환한 isbn들을 모아 가능한 모든 조합 찾고 최저가인 조합 반환
 def find_all_combinations(book_prices) -> list: #[0] : total_cost, [1:] : combo
   import itertools
@@ -138,8 +137,6 @@ def find_all_combinations(book_prices) -> list: #[0] : total_cost, [1:] : combo
 
   return result
 
-
-
 # 페이지의 배경 이미지 설정
 st.markdown(
     """
@@ -172,15 +169,17 @@ def add_isbn():
     if isbn_input.replace(" ", "").isdigit():  # ISBN이 숫자만 이루어져 있는지 확인 (사이 공백 무시)
         isbn_input = isbn_input.replace(" ", "")  # ISBN에서 모든 공백 제거
 
-        if len(isbn_input) != 13:
-            st.warning("ISBN은 13자리 수로 이루어져 있습니다.")
+        # if len(isbn_input) != 13 or len(isbn_input) != 10:
+            # st.warning("ISBN은 13자리 또는 10자리 숫자로 이루어져 있습니다.")
         #elif isbn_input and isbn_input not in st.session_state.isbn_list:
-        elif len(isbn_input) == 13 and isbn_input not in st.session_state.isbn_list:
+        if (len(isbn_input) == 13 or len(isbn_input) == 10) and isbn_input not in st.session_state.isbn_list:
             st.session_state.isbn_list.append(isbn_input)
             st.success(f"ISBN '{isbn_input}'가 추가되었습니다.")
             st.session_state.isbn_input = ""  # 입력란 초기화
         elif isbn_input in st.session_state.isbn_list:
             st.warning("이미 추가된 ISBN입니다.")
+        else:
+            st.warning("ISBN은 13자리 또는 10자리 숫자로 이루어져 있습니다.")
     else:
         st.warning("숫자만 입력해 주세요.")
 
@@ -218,19 +217,24 @@ def isbn_to_title(isbn):
     except requests.RequestException as e:
         return f":red[HTTP 요청 중 오류 발생:] {e}"
 
+st.write("")
+st.write("")
 
 # ISBN 입력
+st.subheader("ISBN 입력", divider=True)
 isbn_input = st.text_input("", placeholder="ISBN을 입력하고 엔터를 누르세요",
                             key="isbn_input", on_change=add_isbn)
 
-# # 추가하기 버튼
-# if st.button("추가하기"):
-#     add_isbn()
+# 추가하기 버튼
+if st.button("목록에 추가하기"):
+    add_isbn()
 
+st.write('')
+st.write('')
+
+st.subheader("추가된 책 목록",divider=True)
 # ISBN 목록 표시
-
 if st.session_state.isbn_list:
-    st.subheader("추가된 책 목록",divider=True)
     for index, isbn in enumerate(st.session_state.isbn_list, start=1):
         col1, col2 = st.columns([9, 1])
         with col1:
@@ -240,15 +244,33 @@ if st.session_state.isbn_list:
                 st.session_state.isbn_list.remove(isbn)
                 st.success(f"ISBN '{isbn}'가 삭제되었습니다.")
                 st.rerun()  # 삭제 후 즉시 페이지를 다시 로드
-    st.divider()
+    # 모두 삭제 버튼 추가
+    col3, col4 = st.columns([9,2])
+    with col3:
+        st.write('')
+    with col4:
+        if st.button("모두 삭제"):
+            st.session_state.isbn_list.clear()
+            st.success("모든 ISBN이 삭제되었습니다.")
+            st.rerun()
+else:
+    st.write("**:red[아직 추가된 책이 없습니다.]**")
+    st.write("")
 
 every = dict()
 isbns = []
 
+st.divider()
+search = st.button("최저가 탐색")
+st.write("")
+st.write("")
+
 # 최저가 탐색 버튼
-if st.button("최저가 탐색"):
+if search:
+    st.subheader('최저가 조합',divider=True)
     if st.session_state.isbn_list:
-        st.success("최저가 탐색을 시작합니다...")
+        #st.success("최저가 탐색을 시작합니다...")
+        st.divider()
         for isbn in st.session_state.isbn_list:
             tmp = dict_maker(isbn)
             every[isbn] = tmp
@@ -259,13 +281,13 @@ if st.button("최저가 탐색"):
         for i in range(len(best_combo)):
             if best_combo[i] != '품절된 책':
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
-                st.write(f"{best_combo[i]}에서 {every[st.session_state.isbn_list[i]][best_combo[i]]}원에 구매")
+                st.write(f"{best_combo[i]}에서 {format(int(every[st.session_state.isbn_list[i]][best_combo[i]]),',d')}원에 구매")
                 st.divider()
             else:
                 st.write(f"ISBN-{st.session_state.isbn_list[i]}, {isbn_to_title(st.session_state.isbn_list[i])}")
                 st.write('중고 재고 없음')
                 st.divider()
 
-        st.subheader(f"{min_total_cost}원")
+        st.subheader(f"총 {format(int(min_total_cost),',d')}원")
     else:
         st.warning("ISBN 목록이 비어 있습니다. 먼저 ISBN을 추가해 주세요.")
