@@ -288,6 +288,6 @@ if search:
                 st.write('중고 재고 없음')
                 st.divider()
 
-        st.subheader(f"{format(int(min_total_cost),',d')}원")
+        st.subheader(f"총 {format(int(min_total_cost),',d')}원")
     else:
         st.warning("ISBN 목록이 비어 있습니다. 먼저 ISBN을 추가해 주세요.")
